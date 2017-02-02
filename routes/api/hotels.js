@@ -12,6 +12,18 @@ router.get('/', (req, res, next)=>{
 	.catch();
 });
 
+router.get('/:id', (req, res, next) => {
+  Hotel.findOne({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then((hotel) => {
+    res.json(hotel);
+  })
+  .catch(next)
+})
+
 router.post('/:id', (req, res, next)=>{
 	// Hotel.findOne({where: {}})
 });

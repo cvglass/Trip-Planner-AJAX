@@ -30,6 +30,7 @@ $(function initializeMap (){
 
   appStore.subscribe(state => {
     const day = state.days[state.currentDay];
+    console.log('Map Problem: ', day);
     if(day) {
       clearMap();
       ['hotels', 'restaurants', 'activities']

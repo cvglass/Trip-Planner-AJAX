@@ -134,19 +134,51 @@ $.get('/api/activities')
     );
   });
 
+
+function loadDays(){
+  let days = $.get('/api/days');
+  let hotels = $.get('/api/hotels');
+
+
   $.get('/api/days')
-    .then((days) => {
-      days.forEach(dayObj =>
+    .then(days => {
+      days.forEach(day => {
+        if(day.hotelId){
+          return $.get(`/api/hotels/${day.hotelId}`)
+          .then(hotel => {
+            appStore.dispatch({
+              type: 'ADD_DAY',
+              day: {
+              hotels: [hotel], //get hotel obj
+              restaurants: [],
+              activities: []
+              }
+            })
+          })
+         }
+       })
+
+      // days.map(day => {
+      //   if (!day.hotelId){ return; }
+      //   return $.get(`/api/hotels/${day.hotelId}`)
+      //   .then(hotel => {
+      //     appStore.dispatch({
+      //       type: 'ADD_HOTEL',
+      //       hotel
+      //     })
+      //   })
+      // })
+      //activities and restaurants go here
+      // return days;
+      })
+      .then((days) => {
+        console.log('days: ', days);
         appStore.dispatch({
-          type: 'ADD_DAY',
-          day: {
-            hotels: [], //get hotel obj
-            restaurants: [],
-            activities: []
-          }
-        })
-      );
-    })
-    .then(() => {
-      appStore.dispatch(setCurrentDay(0));
-    });
+            type: 'SET_CURRENT_DAY',
+            currentDay: 1
+          });
+      });
+  }
+
+loadDays();
+

@@ -98,6 +98,7 @@ function AttractionList(attractions) {
 
 function AttractionListContainer(type, state) {
   const day = state.days[state.currentDay];
+  // console.log('day: ', day, 'state: ', state);
   if(!day) { return; }
 
   if(!day[type]) { return; }
