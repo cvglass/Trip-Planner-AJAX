@@ -12,8 +12,8 @@ router.get('/', (req, res, next)=>{
 	.catch();
 });
 
-router.post('/', (req, res, next)=>{
-	res.send('made it to activities')
+router.post('/:id', (req, res, next)=>{
+	// Hotel.findOne({where: {}})
 });
 
 router.put('/', (req, res, next)=>{

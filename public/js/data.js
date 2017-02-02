@@ -42,7 +42,7 @@ function reducer(state, action) {
           .concat([action.attractionId]);
 
         return nextCurrentDay;
-      })
+      });
   }
 
 
@@ -70,21 +70,31 @@ function addDay() {
       appStore.dispatch({
       type: 'ADD_DAY',
       day: {
-        hotels: [],
+        hotels: [], //array of objects
         restaurants: [],
         activities: []
       }
     });
   })
-  
+
 }
 
+//add ajax put request to day
 function addAttractionToDay(type, attractionId) {
-  return {
-    type: 'ADD_ATTRACTION_TO_DAY',
-    attractionType: type,
-    attractionId
-  };
+  console.log('GOT TO ADD ATTRACTION TO DAY');
+  $.ajax({
+    type: 'PUT',
+    url: `/api/days/${appStore.state.currentDay + 1}/${type}`,
+    data: {type: type,
+      attractionId: attractionId}
+  })
+    .then(() => {
+      appStore.dispatch({
+      type: 'ADD_ATTRACTION_TO_DAY',
+      attractionType: type,
+      attractionId
+    });
+  });
 }
 
 function setCurrentDay(i) {
@@ -122,4 +132,21 @@ $.get('/api/activities')
         activity
       })
     );
-  })
+  });
+
+  $.get('/api/days')
+    .then((days) => {
+      days.forEach(dayObj =>
+        appStore.dispatch({
+          type: 'ADD_DAY',
+          day: {
+            hotels: [], //get hotel obj
+            restaurants: [],
+            activities: []
+          }
+        })
+      );
+    })
+    .then(() => {
+      appStore.dispatch(setCurrentDay(0));
+    });

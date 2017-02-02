@@ -4,7 +4,7 @@ function AttractionSelect(attractions) {
       ($select, attraction) =>
         $select.append(`<option value="${attraction.id}">${attraction.name}</option>`),
       $('<select />')
-    )
+    );
 }
 
 function PlusButton(onClick) {
@@ -17,17 +17,17 @@ function AttractionChooser(type, attractions) {
   return $(`<div/>`)
     .append(`<h4>${type}</h4>`)
     .append($select)
-    .append(PlusButton(function() {
-      appStore.dispatch(addAttractionToDay(type, $select.val()));
-    }))
-        
+    .append(PlusButton(() => {
+      addAttractionToDay(type, $select.val());
+    }
+    ));
 }
 
 function AttractionChoosers(state) {
   const $elem = $(`
     <div class="panel panel-default">
       <div class="panel-body" id="options-panel">
-      
+
       </div>
     </div>
   `);
@@ -36,7 +36,7 @@ function AttractionChoosers(state) {
     .append(AttractionChooser('hotels', state.hotels))
     .append(AttractionChooser('restaurants', state.restaurants))
     .append(AttractionChooser('activities', state.activities))
-  
+
   return $elem;
 }
 
@@ -100,6 +100,8 @@ function AttractionListContainer(type, state) {
   const day = state.days[state.currentDay];
   if(!day) { return; }
 
+  if(!day[type]) { return; }
+
   const attractions = day[type]
     .map(id => state[type][id]);
 
@@ -126,7 +128,7 @@ function DayPanel(state) {
     .append(AttractionListContainer('hotels', state))
     .append(AttractionListContainer('restaurants', state))
     .append(AttractionListContainer('activities', state));
-  
+
   return $elem;
 }
 

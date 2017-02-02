@@ -4,6 +4,13 @@ var db = require('../../models');
 var Day = db.Day;
 module.exports = router;
 
+router.get('/', (req, res, next) => {
+	Day.findAll()
+	.then((days) => {
+		res.json(days);
+	});
+});
+
 router.get('/:id', (req, res, next)=>{
 	Day.findOne({
 		where: {
@@ -24,29 +31,40 @@ router.post('/', function(req, res, next){
 	.then(function(){
 		res.sendStatus(201);
 	})
-	
+
 })
 
-router.post('/:id/restaurants', (req, res, next)=>{
-	res.send('made it to days')
+// router.put('/:id/restaurant', (req, res, next)=>{
+// 	Day.findById(req.params.id)
+// 	.then((day) => {
+// 		day.rest;
+// 	});
+// });
+
+router.delete('/:id/restaurant', (req, res, next)=>{
+	res.send('made it to days');
 });
 
-router.delete('/:id/restaurants', (req, res, next)=>{
-	res.send('made it to days')
+router.put('/:id/hotels', (req, res, next)=>{
+	Day.findOne({where: {number: req.params.id}})
+	.then((day) => {
+		day.update({
+			hotelId: req.body.attractionId
+		})
+	})
+	.then(() => {
+		  res.sendStatus(204)
+	});
 });
 
-router.post('/:id/hotels', (req, res, next)=>{
-	res.send('made it to days')
+router.delete('/:id/hotel', (req, res, next)=>{
+	;
 });
 
-router.delete('/:id/hotels', (req, res, next)=>{
-	res.send('made it to days')
+router.put('/:id/activity', (req, res, next)=>{
+	res.send('made it to days');
 });
 
-router.post('/:id/activities', (req, res, next)=>{
-	res.send('made it to days')
-});
-
-router.delete('/:id/activities', (req, res, next)=>{
-	res.send('made it to days')
+router.delete('/:id/activity', (req, res, next)=>{
+	res.send('made it to days');
 });
